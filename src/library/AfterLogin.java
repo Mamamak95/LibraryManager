@@ -1,10 +1,12 @@
 package library;
 
+import com.sun.tools.javac.Main;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 public class AfterLogin extends Check{
 
-    public AfterLogin() {
+    public AfterLogin(String id) {
         int bookNum = 3;
         Scanner scan = new Scanner(System.in);
         ArrayList<ArrayList<String>> bookDatas = new ArrayList<ArrayList<String>>();
@@ -38,7 +40,7 @@ public class AfterLogin extends Check{
                 for (int i = 0; i < bookNum; i++) {
 
                     System.out.print(bookDatas.get(i).get(0) + "  " + bookDatas.get(i).get(1) + "  ");
-                    if (bookDatas.get(i).get(2).equals("-1")) {
+                    if (!bookDatas.get(i).get(2).equals("0")) {
                         System.out.println("*loaned");
                     } else {
                         System.out.println(" ");
@@ -70,7 +72,7 @@ public class AfterLogin extends Check{
                 for (int i = 0; i < bookDatas.size(); i++) {
 
                     System.out.print(bookDatas.get(i).get(0) + "  " + bookDatas.get(i).get(1) + "  ");
-                    if (bookDatas.get(i).get(0).equals("-1")) {
+                    if (!bookDatas.get(i).get(2).equals("0")) {
                         System.out.println("*loaned");
                     } else {
                         System.out.println(" ");
@@ -88,11 +90,12 @@ public class AfterLogin extends Check{
                 for (p=0; p < bookNum; p++) {
 
                     if (bookDatas.get(p).get(0).equals(loanBook)) {
-                        st=p;
-                        loanbookname = bookDatas.get(p).get(1);
-                        p++;
-                        booknum = "" + p;
-
+                       if(bookDatas.get(p).get(2).equals("0")) {
+                           st = p;
+                           loanbookname = bookDatas.get(p).get(1);
+                           p++;
+                           booknum = "" + p;
+                       }
                     }
 
                 }
@@ -102,54 +105,54 @@ public class AfterLogin extends Check{
 
                     temp.add(booknum);
                     temp.add(loanbookname);
-                    temp.add("-1");
+                    temp.add(id);
                     bookDatas.add(temp);
 
                     bookDatas.remove(st);
                     int i=0;
-                    while(true)
-                    {
-                    i++;
-                    if(i==bookDatas.size()-st)break;
+                    while(true) {
+                        i++;
+                        if (i == bookDatas.size() - st) break;
 
 
-                        int loannum = st + i+1;
+                        int loannum = st + i + 1;
 
-                            ArrayList<String> temp1 = new ArrayList<>();
-                            String booknum1 = "" + loannum;
-                            temp1.add(booknum1);
+                        ArrayList<String> temp1 = new ArrayList<>();
+                        String booknum1 = "" + loannum;
+                        temp1.add(booknum1);
 
-                            String loanbookname1 = bookDatas.get(st).get(1);
-                            String loancheck = bookDatas.get(st).get(2);
-                            temp1.add(loanbookname1);
-                            temp1.add(loancheck);
+                        String loanbookname1 = bookDatas.get(st).get(1);
+                        String loancheck = bookDatas.get(st).get(2);
+                        temp1.add(loanbookname1);
+                        temp1.add(loancheck);
 
-                            bookDatas.remove(st);
-                            bookDatas.add(temp1);
-
+                        bookDatas.remove(st);
+                        bookDatas.add(temp1);
 
                     }
 
                 }
 
+
             }
             if (select.equals("4")) {
-
                 System.out.println("Input a book number.");
-                String loanBook = scan.nextLine();
-                String booknum = null;
+                String returnBookcode=scan.nextLine();
 
-                String loanbookname = null;
+                String booknum = null;
+                String bookname = null;
                 int p;
                 int st=-1;//행렬위치
                 for (p=0; p < bookNum; p++) {
 
-                    if (bookDatas.get(p).get(0).equals(loanBook)) {
-                        st=p;
-                        loanbookname = bookDatas.get(p).get(1);
-                        p++;
-                        booknum = "" + p;
+                    if (bookDatas.get(p).get(0).equals(returnBookcode)) {
+                        if(bookDatas.get(p).get(2).equals(id)) {
+                            st = p;
 
+                            bookname = bookDatas.get(p).get(1);
+                            p++;
+                            booknum = "" + p;
+                        }
                     }
 
                 }
@@ -158,17 +161,13 @@ public class AfterLogin extends Check{
                     ArrayList<String> temp=new ArrayList<>();
 
                     temp.add(booknum);
-                    temp.add(loanbookname);
+                    temp.add(bookname);
                     temp.add("0");
                     bookDatas.add(temp);
-
                     bookDatas.remove(st);
-                    int i=0;
-                    while(true)
-                    {
-                        i++;
-                        if(i==bookDatas.size()-st)break;
 
+                    for(int i=0;i<bookDatas.size()-st;i++)
+                    {
 
                         int loannum = st + i+1;
 
@@ -189,10 +188,15 @@ public class AfterLogin extends Check{
 
                 }
 
+
+
             }
 
             if (select.equals("q") || select.equals("Q")) {
-                break;
+            LibraryMain a=new LibraryMain();
+
+
+
 
             }
 

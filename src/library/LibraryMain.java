@@ -13,7 +13,7 @@ public class LibraryMain {
 
             select = scan.next();
             if (select.equals("1") ||select.equals("1")) {
-                //Login login=new Login();
+                Login login=new Login();
 
                 //기본 저장된 아이디
                 //id: abcd     pw:1234
@@ -29,7 +29,7 @@ public class LibraryMain {
 
                 String changedID=Encryption.encryption(newID);
                 String changedPW=Encryption.encryption(newPW);
-                Check.signup(changedID,changedPW,1);
+                Check.signup(changedID,changedPW);
 
 
             }
